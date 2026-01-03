@@ -198,7 +198,7 @@ ${analysis.improvements.map((i, idx) => `${idx + 1}. ${i}`).join('\n')}
                     value={goalSearch}
                     onChange={(e) => handleGoalSearch(e.target.value)}
                     placeholder="Search for goals..."
-                    className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                    className="w-full p-3 bg-gray-800 text-white border-2 border-purple-500/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500 placeholder-gray-400"
                   />
                   {goalSuggestions.length > 0 && (
                     <div className="absolute z-10 w-full mt-2 bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg shadow-xl max-h-48 overflow-y-auto border-2 border-purple-400">
@@ -250,11 +250,11 @@ ${analysis.improvements.map((i, idx) => `${idx + 1}. ${i}`).join('\n')}
                 <select
                   value={editedProfile.experienceLevel}
                   onChange={(e) => setEditedProfile({ ...editedProfile, experienceLevel: e.target.value as any })}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                  className="w-full p-3 bg-gray-800 text-white border-2 border-blue-500/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
-                  <option value="beginner">Beginner</option>
-                  <option value="intermediate">Intermediate</option>
-                  <option value="advanced">Advanced</option>
+                  <option value="beginner" className="bg-gray-800">Beginner</option>
+                  <option value="intermediate" className="bg-gray-800">Intermediate</option>
+                  <option value="advanced" className="bg-gray-800">Advanced</option>
                 </select>
               </div>
               <div>
@@ -262,12 +262,12 @@ ${analysis.improvements.map((i, idx) => `${idx + 1}. ${i}`).join('\n')}
                 <select
                   value={editedProfile.weeklyHours}
                   onChange={(e) => setEditedProfile({ ...editedProfile, weeklyHours: Number(e.target.value) })}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                  className="w-full p-3 bg-gray-800 text-white border-2 border-blue-500/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
-                  <option value={5}>5 hours/week</option>
-                  <option value={10}>10 hours/week</option>
-                  <option value={20}>20 hours/week</option>
-                  <option value={40}>40+ hours/week</option>
+                  <option value={5} className="bg-gray-800">5 hours/week</option>
+                  <option value={10} className="bg-gray-800">10 hours/week</option>
+                  <option value={20} className="bg-gray-800">20 hours/week</option>
+                  <option value={40} className="bg-gray-800">40+ hours/week</option>
                 </select>
               </div>
               <div>
@@ -275,12 +275,12 @@ ${analysis.improvements.map((i, idx) => `${idx + 1}. ${i}`).join('\n')}
                 <select
                   value={editedProfile.learningStyle}
                   onChange={(e) => setEditedProfile({ ...editedProfile, learningStyle: e.target.value as any })}
-                  className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                  className="w-full p-3 bg-gray-800 text-white border-2 border-blue-500/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
-                  <option value="visual">Visual</option>
-                  <option value="hands-on">Hands-on</option>
-                  <option value="reading">Reading</option>
-                  <option value="mixed">Mixed</option>
+                  <option value="visual" className="bg-gray-800">Visual</option>
+                  <option value="hands-on" className="bg-gray-800">Hands-on</option>
+                  <option value="reading" className="bg-gray-800">Reading</option>
+                  <option value="mixed" className="bg-gray-800">Mixed</option>
                 </select>
               </div>
             </div>
@@ -300,7 +300,7 @@ ${analysis.improvements.map((i, idx) => `${idx + 1}. ${i}`).join('\n')}
                 value={skillSearch}
                 onChange={(e) => handleSkillSearch(e.target.value)}
                 placeholder="Search and add skills..."
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
+                className="w-full p-3 bg-gray-800 text-white border-2 border-green-500/50 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 placeholder-gray-400"
               />
               {skillSuggestions.length > 0 && (
                 <div className="absolute z-10 w-full mt-2 bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg shadow-xl max-h-48 overflow-y-auto border-2 border-green-400">
@@ -479,6 +479,8 @@ ${analysis.improvements.map((i, idx) => `${idx + 1}. ${i}`).join('\n')}
     </div>
   );
 }
+
+
 
 
 
