@@ -4,11 +4,12 @@ import { useState, useRef } from 'react';
 import { useApp } from '@/contexts/AppContext';
 import { enhancedAIService } from '@/services/enhancedAIService';
 import { parseDocument, validateFile } from '@/utils/fileUtils';
+import { UserProfile } from '@/services/aiService';
 
 export default function ProfileView() {
   const appContext = useApp();
   const [isEditing, setIsEditing] = useState(false);
-  const [editedProfile, setEditedProfile] = useState(appContext.userProfile!);
+  const [editedProfile, setEditedProfile] = useState<UserProfile>(appContext.userProfile!);
   
   // Search states
   const [goalSearch, setGoalSearch] = useState('');
@@ -18,7 +19,10 @@ export default function ProfileView() {
   
   // File upload
   const [uploading, setUploading] = useState(false);
+  const [uploadType, setUploadType] = useState<'resume' | 'roadmap'>('resume');
+  const [analysisResult, setAnalysisResult] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const roadmapInputRef = useRef<HTMLInputElement>(null);
 
   const handleGoalSearch = (query: string) => {
     setGoalSearch(query);
@@ -78,7 +82,7 @@ export default function ProfileView() {
     setIsEditing(false);
   };
 
-  const handleFileUpload = async (file: File) => {
+  const handleFileUpload = async (file: File, type: 'resume' | 'roadmap') => {
     const validation = validateFile(file);
     if (!validation.valid) {
       alert(validation.error);
@@ -86,10 +90,38 @@ export default function ProfileView() {
     }
 
     setUploading(true);
+    setAnalysisResult('');
     try {
-      const parsed = await parseDocument(file, 'resume');
-      // Store in profile or analyze
-      alert('Document uploaded successfully! AI analysis coming soon.');
+      const parsed = await parseDocument(file, type);
+      
+      // Analyze with AI
+      const analysis = type === 'resume' 
+        ? await enhancedAIService.analyzeResume(parsed)
+        : await enhancedAIService.analyzeRoadmap(parsed);
+      
+      // Show analysis results
+      const resultText = `
+📊 Analysis Complete (${Math.round(analysis.confidence * 100)}% confidence)
+
+${analysis.summary}
+
+💡 Suggestions:
+${analysis.suggestions.map((s, i) => `${i + 1}. ${s}`).join('\n')}
+
+✨ Improvements:
+${analysis.improvements.map((i, idx) => `${idx + 1}. ${i}`).join('\n')}
+      `.trim();
+      
+      setAnalysisResult(resultText);
+      
+      // Store document reference in localStorage
+      const storageKey = type === 'resume' ? 'uploaded-resume' : 'uploaded-roadmap';
+      localStorage.setItem(storageKey, JSON.stringify({
+        fileName: file.name,
+        uploadDate: new Date().toISOString(),
+        analysis: resultText,
+      }));
+      
     } catch (error) {
       alert(`Error uploading file: ${error}`);
     } finally {
@@ -297,27 +329,122 @@ export default function ProfileView() {
 
       {/* Document Upload */}
       <div className="bg-white rounded-xl p-6 shadow-lg">
-        <h3 className="text-xl font-semibold text-gray-800 mb-4">Documents</h3>
-        <p className="text-gray-600 mb-4">Upload your resume or roadmap for AI analysis</p>
+        <h3 className="text-xl font-semibold text-gray-800 mb-4">📄 Documents & AI Analysis</h3>
+        <p className="text-gray-600 mb-4">Upload your resume or roadmap for intelligent AI analysis and suggestions</p>
         
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept=".pdf,.txt"
-          onChange={(e) => {
-            const file = e.target.files?.[0];
-            if (file) handleFileUpload(file);
-          }}
-          className="hidden"
-        />
-        
-        <button
-          onClick={() => fileInputRef.current?.click()}
-          disabled={uploading}
-          className="px-6 py-3 bg-gradient-to-r from-purple-500 to-blue-500 text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50"
-        >
-          {uploading ? 'Uploading...' : 'Upload Document (PDF or TXT)'}
-        </button>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          {/* Resume Upload */}
+          <div className="border-2 border-dashed border-purple-300 rounded-lg p-4 hover:border-purple-500 transition-colors">
+            <h4 className="font-semibold text-gray-700 mb-2">📝 Resume</h4>
+            <p className="text-sm text-gray-500 mb-3">Get AI suggestions to improve your resume</p>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".pdf,.txt"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleFileUpload(file, 'resume');
+              }}
+              className="hidden"
+            />
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              className="w-full px-4 py-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50 text-sm"
+            >
+              {uploading && uploadType === 'resume' ? 'Analyzing...' : 'Upload Resume'}
+            </button>
+          </div>
+
+          {/* Roadmap Upload */}
+          <div className="border-2 border-dashed border-blue-300 rounded-lg p-4 hover:border-blue-500 transition-colors">
+            <h4 className="font-semibold text-gray-700 mb-2">🗺️ Roadmap</h4>
+            <p className="text-sm text-gray-500 mb-3">AI will analyze and suggest improvements</p>
+            <input
+              ref={roadmapInputRef}
+              type="file"
+              accept=".pdf,.txt"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleFileUpload(file, 'roadmap');
+              }}
+              className="hidden"
+            />
+            <button
+              onClick={() => roadmapInputRef.current?.click()}
+              disabled={uploading}
+              className="w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 text-white rounded-lg hover:shadow-lg transition-all disabled:opacity-50 text-sm"
+            >
+              {uploading && uploadType === 'roadmap' ? 'Analyzing...' : 'Upload Roadmap'}
+            </button>
+          </div>
+        </div>
+
+        {/* Analysis Results */}
+        {analysisResult && (
+          <div className="mt-4 p-4 bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg border border-purple-200">
+            <h4 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
+              <span>🤖</span> AI Analysis Results
+            </h4>
+            <pre className="text-sm text-gray-700 whitespace-pre-wrap font-sans">{analysisResult}</pre>
+          </div>
+        )}
+
+        {/* Uploaded Documents History */}
+        <div className="mt-4 pt-4 border-t border-gray-200">
+          <h4 className="font-semibold text-gray-700 mb-2">📚 Uploaded Documents</h4>
+          <div className="space-y-2">
+            {(() => {
+              const resume = localStorage.getItem('uploaded-resume');
+              const roadmap = localStorage.getItem('uploaded-roadmap');
+              const docs = [];
+              
+              if (resume) {
+                const data = JSON.parse(resume);
+                docs.push(
+                  <div key="resume" className="flex items-center justify-between p-3 bg-purple-50 rounded-lg">
+                    <div>
+                      <p className="font-medium text-gray-800">📝 {data.fileName}</p>
+                      <p className="text-xs text-gray-500">Uploaded: {new Date(data.uploadDate).toLocaleDateString()}</p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setAnalysisResult(data.analysis);
+                      }}
+                      className="text-sm text-purple-600 hover:text-purple-800 font-medium"
+                    >
+                      View Analysis
+                    </button>
+                  </div>
+                );
+              }
+              
+              if (roadmap) {
+                const data = JSON.parse(roadmap);
+                docs.push(
+                  <div key="roadmap" className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                    <div>
+                      <p className="font-medium text-gray-800">🗺️ {data.fileName}</p>
+                      <p className="text-xs text-gray-500">Uploaded: {new Date(data.uploadDate).toLocaleDateString()}</p>
+                    </div>
+                    <button
+                      onClick={() => {
+                        setAnalysisResult(data.analysis);
+                      }}
+                      className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                    >
+                      View Analysis
+                    </button>
+                  </div>
+                );
+              }
+              
+              return docs.length > 0 ? docs : (
+                <p className="text-sm text-gray-500 italic">No documents uploaded yet</p>
+              );
+            })()}
+          </div>
+        </div>
       </div>
 
       {/* Stats */}
@@ -340,6 +467,9 @@ export default function ProfileView() {
     </div>
   );
 }
+
+
+
 
 
 
