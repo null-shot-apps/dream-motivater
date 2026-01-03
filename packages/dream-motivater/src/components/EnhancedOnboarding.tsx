@@ -215,12 +215,12 @@ export default function EnhancedOnboarding({ onComplete }: EnhancedOnboardingPro
               
               {/* Suggestions dropdown */}
               {goalSuggestions.length > 0 && (
-                <div className="absolute z-10 w-full mt-2 bg-white rounded-xl shadow-2xl max-h-60 overflow-y-auto">
+                <div className="absolute z-10 w-full mt-2 bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-2xl max-h-60 overflow-y-auto border-2 border-purple-400">
                   {goalSuggestions.map(suggestion => (
                     <button
                       key={suggestion}
                       onClick={() => addPrimaryGoal(suggestion)}
-                      className="w-full text-left p-3 hover:bg-purple-50 transition-colors border-b border-gray-100 last:border-0"
+                      className="w-full text-left p-3 text-white hover:bg-gradient-to-r hover:from-purple-600 hover:to-purple-500 transition-all border-b border-gray-700 last:border-0 font-medium"
                     >
                       {suggestion}
                     </button>
@@ -263,12 +263,12 @@ export default function EnhancedOnboarding({ onComplete }: EnhancedOnboardingPro
               
               {/* Suggestions dropdown */}
               {goalSuggestions.length > 0 && (
-                <div className="absolute z-10 w-full mt-2 bg-white rounded-xl shadow-2xl max-h-60 overflow-y-auto">
+                <div className="absolute z-10 w-full mt-2 bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-2xl max-h-60 overflow-y-auto border-2 border-blue-400">
                   {goalSuggestions.map(suggestion => (
                     <button
                       key={suggestion}
                       onClick={() => addSecondaryGoal(suggestion)}
-                      className="w-full text-left p-3 hover:bg-blue-50 transition-colors border-b border-gray-100 last:border-0"
+                      className="w-full text-left p-3 text-white hover:bg-gradient-to-r hover:from-blue-600 hover:to-blue-500 transition-all border-b border-gray-700 last:border-0 font-medium"
                     >
                       {suggestion}
                     </button>
@@ -368,12 +368,12 @@ export default function EnhancedOnboarding({ onComplete }: EnhancedOnboardingPro
               
               {/* Suggestions dropdown */}
               {skillSuggestions.length > 0 && (
-                <div className="absolute z-10 w-full mt-2 bg-white rounded-xl shadow-2xl max-h-60 overflow-y-auto">
+                <div className="absolute z-10 w-full mt-2 bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl shadow-2xl max-h-60 overflow-y-auto border-2 border-green-400">
                   {skillSuggestions.map(suggestion => (
                     <button
                       key={suggestion}
                       onClick={() => addSkill(suggestion)}
-                      className="w-full text-left p-3 hover:bg-green-50 transition-colors border-b border-gray-100 last:border-0"
+                      className="w-full text-left p-3 text-white hover:bg-gradient-to-r hover:from-green-600 hover:to-green-500 transition-all border-b border-gray-700 last:border-0 font-medium"
                     >
                       {suggestion}
                     </button>
@@ -496,6 +496,8 @@ export default function EnhancedOnboarding({ onComplete }: EnhancedOnboardingPro
     </div>
   );
 }
+
+
 
 
 

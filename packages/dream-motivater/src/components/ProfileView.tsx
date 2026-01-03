@@ -45,20 +45,32 @@ export default function ProfileView() {
   };
 
   const addGoal = (goal: string) => {
+    // Handle custom goals (remove the "✨ Add ... (custom)" prefix)
+    let cleanGoal = goal;
+    if (goal.startsWith('✨ Add "') && goal.endsWith('" (custom)')) {
+      cleanGoal = goal.slice(7, -10); // Extract the actual goal text
+    }
+    
     if (!editedProfile.mainGoal) {
-      setEditedProfile({ ...editedProfile, mainGoal: goal });
+      setEditedProfile({ ...editedProfile, mainGoal: cleanGoal });
     } else if (!editedProfile.secondaryGoal) {
-      setEditedProfile({ ...editedProfile, secondaryGoal: goal });
+      setEditedProfile({ ...editedProfile, secondaryGoal: cleanGoal });
     }
     setGoalSearch('');
     setGoalSuggestions([]);
   };
 
   const addSkill = (skill: string) => {
-    if (!editedProfile.pastSkills.includes(skill)) {
+    // Handle custom skills (remove the "✨ Add ... (custom)" prefix)
+    let cleanSkill = skill;
+    if (skill.startsWith('✨ Add "') && skill.endsWith('" (custom)')) {
+      cleanSkill = skill.slice(7, -10); // Extract the actual skill text
+    }
+    
+    if (!editedProfile.pastSkills.includes(cleanSkill)) {
       setEditedProfile({
         ...editedProfile,
-        pastSkills: [...editedProfile.pastSkills, skill],
+        pastSkills: [...editedProfile.pastSkills, cleanSkill],
       });
     }
     setSkillSearch('');
@@ -189,12 +201,12 @@ ${analysis.improvements.map((i, idx) => `${idx + 1}. ${i}`).join('\n')}
                     className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
                   />
                   {goalSuggestions.length > 0 && (
-                    <div className="absolute z-10 w-full mt-2 bg-white rounded-lg shadow-xl max-h-48 overflow-y-auto border border-gray-200">
+                    <div className="absolute z-10 w-full mt-2 bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg shadow-xl max-h-48 overflow-y-auto border-2 border-purple-400">
                       {goalSuggestions.map(suggestion => (
                         <button
                           key={suggestion}
                           onClick={() => addGoal(suggestion)}
-                          className="w-full text-left p-3 hover:bg-purple-50 transition-colors border-b border-gray-100 last:border-0"
+                          className="w-full text-left p-3 text-white hover:bg-gradient-to-r hover:from-purple-600 hover:to-purple-500 transition-all border-b border-gray-700 last:border-0 font-medium"
                         >
                           {suggestion}
                         </button>
@@ -291,12 +303,12 @@ ${analysis.improvements.map((i, idx) => `${idx + 1}. ${i}`).join('\n')}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400"
               />
               {skillSuggestions.length > 0 && (
-                <div className="absolute z-10 w-full mt-2 bg-white rounded-lg shadow-xl max-h-48 overflow-y-auto border border-gray-200">
+                <div className="absolute z-10 w-full mt-2 bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg shadow-xl max-h-48 overflow-y-auto border-2 border-green-400">
                   {skillSuggestions.map(suggestion => (
                     <button
                       key={suggestion}
                       onClick={() => addSkill(suggestion)}
-                      className="w-full text-left p-3 hover:bg-purple-50 transition-colors border-b border-gray-100 last:border-0"
+                      className="w-full text-left p-3 text-white hover:bg-gradient-to-r hover:from-green-600 hover:to-green-500 transition-all border-b border-gray-700 last:border-0 font-medium"
                     >
                       {suggestion}
                     </button>
@@ -467,6 +479,9 @@ ${analysis.improvements.map((i, idx) => `${idx + 1}. ${i}`).join('\n')}
     </div>
   );
 }
+
+
+
 
 
 
