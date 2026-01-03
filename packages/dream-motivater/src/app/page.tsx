@@ -2,7 +2,7 @@
 
 import { useApp } from '@/contexts/AppContext';
 import { aiService } from '@/services/aiService';
-import Onboarding from '@/components/Onboarding';
+import SmartOnboarding from '@/components/SmartOnboarding';
 import Dashboard from '@/components/Dashboard';
 
 export default function Home() {
@@ -19,9 +19,10 @@ export default function Home() {
   };
 
   if (!isOnboarded) {
-    return <Onboarding onComplete={handleOnboardingComplete} />;
+    return <SmartOnboarding onComplete={handleOnboardingComplete} useEnhanced={true} />;
   }
 
   return <Dashboard />;
 }
+
 

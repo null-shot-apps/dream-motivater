@@ -7,8 +7,9 @@ import StudyView from './StudyView';
 import ProjectsView from './ProjectsView';
 import JobsView from './JobsView';
 import ResumeView from './ResumeView';
+import ProfileView from './ProfileView';
 
-type View = 'roadmap' | 'study' | 'projects' | 'jobs' | 'resume';
+type View = 'roadmap' | 'study' | 'projects' | 'jobs' | 'resume' | 'profile';
 
 export default function Dashboard() {
   const [currentView, setCurrentView] = useState<View>('roadmap');
@@ -24,6 +25,7 @@ export default function Dashboard() {
     { id: 'projects', label: 'Projects', icon: '🚀' },
     { id: 'jobs', label: 'Jobs', icon: '💼' },
     { id: 'resume', label: 'Resume', icon: '📄' },
+    { id: 'profile', label: 'Profile', icon: '👤' },
   ];
 
   return (
@@ -82,8 +84,13 @@ export default function Dashboard() {
         {currentView === 'projects' && <ProjectsView />}
         {currentView === 'jobs' && <JobsView />}
         {currentView === 'resume' && <ResumeView />}
+        {currentView === 'profile' && <ProfileView />}
       </main>
     </div>
   );
 }
+
+
+
+
 
