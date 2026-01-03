@@ -53,8 +53,14 @@ export default function EnhancedOnboarding({ onComplete }: EnhancedOnboardingPro
   };
 
   const addPrimaryGoal = (goal: string) => {
-    if (!profile.primaryGoals?.includes(goal)) {
-      updateProfile('primaryGoals', [...(profile.primaryGoals || []), goal]);
+    // Handle custom goals (remove the "✨ Add ... (custom)" prefix)
+    let cleanGoal = goal;
+    if (goal.startsWith('✨ Add "') && goal.endsWith('" (custom)')) {
+      cleanGoal = goal.slice(7, -10); // Extract the actual goal text
+    }
+    
+    if (!profile.primaryGoals?.includes(cleanGoal)) {
+      updateProfile('primaryGoals', [...(profile.primaryGoals || []), cleanGoal]);
     }
     setGoalSearch('');
     setGoalSuggestions([]);
@@ -65,8 +71,14 @@ export default function EnhancedOnboarding({ onComplete }: EnhancedOnboardingPro
   };
 
   const addSecondaryGoal = (goal: string) => {
-    if (!profile.secondaryGoals?.includes(goal)) {
-      updateProfile('secondaryGoals', [...(profile.secondaryGoals || []), goal]);
+    // Handle custom goals (remove the "✨ Add ... (custom)" prefix)
+    let cleanGoal = goal;
+    if (goal.startsWith('✨ Add "') && goal.endsWith('" (custom)')) {
+      cleanGoal = goal.slice(7, -10); // Extract the actual goal text
+    }
+    
+    if (!profile.secondaryGoals?.includes(cleanGoal)) {
+      updateProfile('secondaryGoals', [...(profile.secondaryGoals || []), cleanGoal]);
     }
     setGoalSearch('');
     setGoalSuggestions([]);
@@ -77,8 +89,14 @@ export default function EnhancedOnboarding({ onComplete }: EnhancedOnboardingPro
   };
 
   const addSkill = (skill: string) => {
-    if (!profile.skills?.includes(skill)) {
-      updateProfile('skills', [...(profile.skills || []), skill]);
+    // Handle custom skills (remove the "✨ Add ... (custom)" prefix)
+    let cleanSkill = skill;
+    if (skill.startsWith('✨ Add "') && skill.endsWith('" (custom)')) {
+      cleanSkill = skill.slice(7, -10); // Extract the actual skill text
+    }
+    
+    if (!profile.skills?.includes(cleanSkill)) {
+      updateProfile('skills', [...(profile.skills || []), cleanSkill]);
     }
     setSkillSearch('');
     setSkillSuggestions([]);
@@ -211,7 +229,7 @@ export default function EnhancedOnboarding({ onComplete }: EnhancedOnboardingPro
               )}
             </div>
 
-            <p className="text-white/60 text-sm">💡 Tip: You can add custom goals by typing and selecting them</p>
+            <p className="text-white/60 text-sm">💡 Tip: Type ANY career goal - not just from the list! Custom entries welcome.</p>
           </div>
         )}
 
@@ -258,6 +276,8 @@ export default function EnhancedOnboarding({ onComplete }: EnhancedOnboardingPro
                 </div>
               )}
             </div>
+
+            <p className="text-white/60 text-sm">💡 Tip: Type ANY goal - custom entries welcome! (e.g., &quot;Part-time Barista&quot;, &quot;Freelance Photographer&quot;)</p>
           </div>
         )}
 
@@ -362,7 +382,7 @@ export default function EnhancedOnboarding({ onComplete }: EnhancedOnboardingPro
               )}
             </div>
 
-            <p className="text-white/60 text-sm">💡 Tip: Include both technical and soft skills</p>
+            <p className="text-white/60 text-sm">💡 Tip: Add ANY skill - technical, soft skills, languages, tools, etc. Custom entries welcome!</p>
           </div>
         )}
 
@@ -476,4 +496,11 @@ export default function EnhancedOnboarding({ onComplete }: EnhancedOnboardingPro
     </div>
   );
 }
+
+
+
+
+
+
+
 

@@ -253,74 +253,230 @@ class EnhancedAIService {
   }
 
   /**
-   * Search for goals (not fixed list)
+   * Search for goals (not fixed list - users can add ANY custom goal)
    */
   searchGoals(query: string): string[] {
     const allGoals = [
-      // Tech roles
+      // Software Development
       'Frontend Developer', 'Backend Developer', 'Full Stack Developer',
-      'Data Analyst', 'Data Scientist', 'Machine Learning Engineer',
       'Mobile Developer', 'iOS Developer', 'Android Developer',
-      'DevOps Engineer', 'Cloud Engineer', 'Security Engineer',
-      'UI/UX Designer', 'Product Manager', 'QA Engineer',
+      'React Developer', 'Vue Developer', 'Angular Developer',
+      'Node.js Developer', 'Python Developer', 'Java Developer',
+      'C# Developer', 'PHP Developer', 'Ruby Developer',
+      'Game Developer', 'Unity Developer', 'Unreal Engine Developer',
+      'Embedded Systems Developer', 'Firmware Engineer',
       
-      // Part-time/Service roles
-      'Customer Service Representative', 'Age Care Worker', 'Retail Assistant',
-      'Administrative Assistant', 'Virtual Assistant', 'Content Writer',
-      'Social Media Manager', 'Tutor', 'Freelance Developer',
+      // Data & AI
+      'Data Analyst', 'Data Scientist', 'Machine Learning Engineer',
+      'AI Engineer', 'Deep Learning Engineer', 'NLP Engineer',
+      'Data Engineer', 'Business Intelligence Analyst',
+      'Quantitative Analyst', 'Research Scientist',
+      
+      // DevOps & Cloud
+      'DevOps Engineer', 'Cloud Engineer', 'Site Reliability Engineer',
+      'Platform Engineer', 'Infrastructure Engineer',
+      'AWS Solutions Architect', 'Azure Administrator', 'GCP Engineer',
+      'Kubernetes Administrator', 'Docker Specialist',
+      
+      // Security
+      'Security Engineer', 'Cybersecurity Analyst', 'Penetration Tester',
+      'Security Architect', 'Ethical Hacker', 'SOC Analyst',
+      'Information Security Analyst', 'Cryptographer',
+      
+      // Design & Product
+      'UI/UX Designer', 'Product Designer', 'Graphic Designer',
+      'Web Designer', 'Motion Graphics Designer', '3D Designer',
+      'Product Manager', 'Technical Product Manager',
+      'UX Researcher', 'Design Systems Designer',
+      
+      // QA & Testing
+      'QA Engineer', 'Test Automation Engineer', 'QA Analyst',
+      'Performance Tester', 'Manual Tester',
+      
+      // Business & Marketing
+      'Digital Marketing Specialist', 'SEO Specialist', 'Content Marketer',
+      'Social Media Manager', 'Email Marketing Specialist',
+      'Growth Hacker', 'Marketing Analyst', 'Brand Manager',
+      'Business Analyst', 'Systems Analyst', 'Project Manager',
+      'Scrum Master', 'Agile Coach', 'Product Owner',
+      
+      // Content & Creative
+      'Content Writer', 'Technical Writer', 'Copywriter',
+      'Video Editor', 'Photographer', 'Illustrator',
+      'Animator', 'Voice Actor', 'Podcast Producer',
+      
+      // Healthcare & Care
+      'Age Care Worker', 'Disability Support Worker', 'Nurse',
+      'Healthcare Assistant', 'Mental Health Worker',
+      'Occupational Therapist', 'Physiotherapist',
+      
+      // Customer Service & Support
+      'Customer Service Representative', 'Technical Support Specialist',
+      'Help Desk Technician', 'Customer Success Manager',
+      'Account Manager', 'Sales Representative',
+      
+      // Administrative & Office
+      'Administrative Assistant', 'Executive Assistant',
+      'Office Manager', 'Receptionist', 'Data Entry Clerk',
+      'Virtual Assistant', 'Personal Assistant',
+      
+      // Retail & Hospitality
+      'Retail Assistant', 'Store Manager', 'Cashier',
+      'Barista', 'Waiter/Waitress', 'Chef', 'Cook',
+      'Hotel Receptionist', 'Event Coordinator',
+      
+      // Education & Training
+      'Teacher', 'Tutor', 'Online Instructor', 'Corporate Trainer',
+      'Educational Content Creator', 'Curriculum Developer',
+      
+      // Freelance & Entrepreneurship
+      'Freelance Developer', 'Freelance Designer', 'Freelance Writer',
+      'Consultant', 'Entrepreneur', 'Startup Founder',
+      'E-commerce Store Owner', 'Affiliate Marketer',
+      
+      // Other Tech Roles
+      'Blockchain Developer', 'Smart Contract Developer',
+      'AR/VR Developer', 'IoT Developer', 'Robotics Engineer',
+      'Database Administrator', 'Network Engineer',
+      'Systems Administrator', 'IT Support Specialist',
     ];
 
-    if (!query) return allGoals.slice(0, 10);
+    if (!query) return allGoals.slice(0, 15);
 
     const filtered = allGoals.filter(goal =>
       goal.toLowerCase().includes(query.toLowerCase())
     );
 
-    // Allow custom goals if no matches
-    if (filtered.length === 0 && query.length > 2) {
-      return [query, ...allGoals.slice(0, 5)];
+    // ALWAYS allow custom goals - add user's input as first option if they've typed something
+    if (query.length > 2) {
+      // Check if exact match exists
+      const exactMatch = filtered.find(g => g.toLowerCase() === query.toLowerCase());
+      if (!exactMatch) {
+        // Add custom option at the top
+        return [`✨ Add "${query}" (custom)`, ...filtered.slice(0, 9)];
+      }
     }
 
     return filtered.slice(0, 10);
   }
 
   /**
-   * Search for skills (not fixed list)
+   * Search for skills (not fixed list - users can add ANY custom skill)
    */
   searchSkills(query: string): string[] {
     const allSkills = [
-      // Programming languages
-      'JavaScript', 'TypeScript', 'Python', 'Java', 'C++', 'C#', 'Go', 'Rust', 'PHP', 'Ruby',
+      // Programming Languages
+      'JavaScript', 'TypeScript', 'Python', 'Java', 'C++', 'C#', 'C',
+      'Go', 'Rust', 'PHP', 'Ruby', 'Swift', 'Kotlin', 'Dart', 'Scala',
+      'R', 'MATLAB', 'Perl', 'Lua', 'Haskell', 'Elixir', 'Clojure',
       
-      // Frontend
-      'HTML', 'CSS', 'React', 'Vue', 'Angular', 'Next.js', 'Tailwind CSS', 'SASS',
+      // Frontend Technologies
+      'HTML', 'CSS', 'React', 'Vue.js', 'Angular', 'Svelte', 'Next.js',
+      'Nuxt.js', 'Gatsby', 'Tailwind CSS', 'Bootstrap', 'Material-UI',
+      'SASS', 'LESS', 'Styled Components', 'Webpack', 'Vite', 'Babel',
+      'jQuery', 'Redux', 'MobX', 'Zustand', 'Recoil',
       
-      // Backend
-      'Node.js', 'Express', 'Django', 'Flask', 'Spring Boot', 'ASP.NET',
+      // Backend Technologies
+      'Node.js', 'Express.js', 'Nest.js', 'Django', 'Flask', 'FastAPI',
+      'Spring Boot', 'Spring Framework', 'ASP.NET', 'Laravel', 'Ruby on Rails',
+      'GraphQL', 'REST API', 'gRPC', 'WebSockets', 'Microservices',
       
       // Databases
-      'SQL', 'PostgreSQL', 'MySQL', 'MongoDB', 'Redis', 'Firebase',
+      'SQL', 'PostgreSQL', 'MySQL', 'SQLite', 'Oracle', 'SQL Server',
+      'MongoDB', 'Redis', 'Cassandra', 'DynamoDB', 'Firebase',
+      'Elasticsearch', 'Neo4j', 'CouchDB', 'InfluxDB',
       
-      // Tools
-      'Git', 'Docker', 'Kubernetes', 'AWS', 'Azure', 'CI/CD', 'Testing',
+      // Cloud & DevOps
+      'AWS', 'Azure', 'Google Cloud Platform', 'Heroku', 'Vercel', 'Netlify',
+      'Docker', 'Kubernetes', 'Jenkins', 'GitLab CI', 'GitHub Actions',
+      'CircleCI', 'Travis CI', 'Terraform', 'Ansible', 'Chef', 'Puppet',
+      'CI/CD', 'Infrastructure as Code', 'Serverless', 'Lambda Functions',
       
-      // Data Science
-      'Pandas', 'NumPy', 'TensorFlow', 'PyTorch', 'Scikit-learn', 'Data Visualization',
+      // Version Control
+      'Git', 'GitHub', 'GitLab', 'Bitbucket', 'SVN',
       
-      // Soft skills
-      'Communication', 'Problem Solving', 'Team Collaboration', 'Time Management',
-      'Customer Service', 'Leadership', 'Project Management',
+      // Testing
+      'Jest', 'Mocha', 'Chai', 'Cypress', 'Selenium', 'Playwright',
+      'JUnit', 'PyTest', 'Unit Testing', 'Integration Testing',
+      'E2E Testing', 'Test-Driven Development', 'Behavior-Driven Development',
+      
+      // Mobile Development
+      'React Native', 'Flutter', 'SwiftUI', 'UIKit', 'Jetpack Compose',
+      'Xamarin', 'Ionic', 'Cordova', 'iOS Development', 'Android Development',
+      
+      // Data Science & ML
+      'Pandas', 'NumPy', 'Matplotlib', 'Seaborn', 'Plotly',
+      'TensorFlow', 'PyTorch', 'Keras', 'Scikit-learn', 'XGBoost',
+      'Machine Learning', 'Deep Learning', 'Neural Networks',
+      'Natural Language Processing', 'Computer Vision', 'Data Analysis',
+      'Data Visualization', 'Statistical Analysis', 'A/B Testing',
+      'Jupyter Notebook', 'Apache Spark', 'Hadoop', 'Tableau', 'Power BI',
+      
+      // Security
+      'Cybersecurity', 'Penetration Testing', 'Ethical Hacking',
+      'Network Security', 'Application Security', 'Cryptography',
+      'OWASP', 'Security Auditing', 'Vulnerability Assessment',
+      
+      // Design
+      'Figma', 'Adobe XD', 'Sketch', 'Photoshop', 'Illustrator',
+      'InDesign', 'After Effects', 'Premiere Pro', 'Blender',
+      'UI Design', 'UX Design', 'User Research', 'Wireframing',
+      'Prototyping', 'Design Systems', 'Responsive Design',
+      'Accessibility', 'Color Theory', 'Typography',
+      
+      // Game Development
+      'Unity', 'Unreal Engine', 'Godot', 'Game Design', '3D Modeling',
+      'Animation', 'Shader Programming', 'Physics Simulation',
+      
+      // Blockchain
+      'Blockchain', 'Solidity', 'Smart Contracts', 'Web3.js', 'Ethers.js',
+      'Cryptocurrency', 'DeFi', 'NFTs',
+      
+      // Business & Soft Skills
+      'Communication', 'Problem Solving', 'Critical Thinking',
+      'Team Collaboration', 'Leadership', 'Time Management',
+      'Project Management', 'Agile', 'Scrum', 'Kanban',
+      'Customer Service', 'Sales', 'Negotiation', 'Public Speaking',
+      'Presentation Skills', 'Writing', 'Technical Writing',
+      'Documentation', 'Mentoring', 'Conflict Resolution',
+      
+      // Marketing & SEO
+      'SEO', 'SEM', 'Google Analytics', 'Google Ads', 'Facebook Ads',
+      'Content Marketing', 'Email Marketing', 'Social Media Marketing',
+      'Copywriting', 'Brand Strategy', 'Market Research',
+      
+      // Other Technical Skills
+      'Linux', 'Unix', 'Bash Scripting', 'PowerShell', 'Vim', 'Emacs',
+      'Regular Expressions', 'Algorithms', 'Data Structures',
+      'System Design', 'Architecture Patterns', 'Design Patterns',
+      'Object-Oriented Programming', 'Functional Programming',
+      'Concurrent Programming', 'Asynchronous Programming',
+      'Performance Optimization', 'Code Review', 'Debugging',
+      
+      // Healthcare & Care Skills
+      'Patient Care', 'First Aid', 'CPR', 'Medical Terminology',
+      'Elderly Care', 'Disability Support', 'Mental Health Support',
+      'Medication Administration', 'Care Planning',
+      
+      // Languages
+      'English', 'Spanish', 'Mandarin', 'French', 'German', 'Japanese',
+      'Korean', 'Arabic', 'Portuguese', 'Hindi', 'Italian',
     ];
 
-    if (!query) return allSkills.slice(0, 15);
+    if (!query) return allSkills.slice(0, 20);
 
     const filtered = allSkills.filter(skill =>
       skill.toLowerCase().includes(query.toLowerCase())
     );
 
-    // Allow custom skills if no matches
-    if (filtered.length === 0 && query.length > 2) {
-      return [query, ...allSkills.slice(0, 10)];
+    // ALWAYS allow custom skills - add user's input as first option if they've typed something
+    if (query.length > 2) {
+      // Check if exact match exists
+      const exactMatch = filtered.find(s => s.toLowerCase() === query.toLowerCase());
+      if (!exactMatch) {
+        // Add custom option at the top
+        return [`✨ Add "${query}" (custom)`, ...filtered.slice(0, 14)];
+      }
     }
 
     return filtered.slice(0, 15);
@@ -829,6 +985,8 @@ class EnhancedAIService {
 
 // Export singleton
 export const enhancedAIService = new EnhancedAIService();
+
+
 
 
 
