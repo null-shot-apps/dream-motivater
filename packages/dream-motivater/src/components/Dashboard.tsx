@@ -7,9 +7,8 @@ import StudyView from './StudyView';
 import ProjectsView from './ProjectsView';
 import JobsView from './JobsView';
 import ResumeView from './ResumeView';
-import ProfileView from './ProfileView';
 
-type View = 'roadmap' | 'study' | 'projects' | 'jobs' | 'resume' | 'profile';
+type View = 'roadmap' | 'study' | 'projects' | 'jobs' | 'resume';
 
 export default function Dashboard() {
   const [currentView, setCurrentView] = useState<View>('roadmap');
@@ -25,7 +24,6 @@ export default function Dashboard() {
     { id: 'projects', label: 'Projects', icon: '🚀' },
     { id: 'jobs', label: 'Jobs', icon: '💼' },
     { id: 'resume', label: 'Resume', icon: '📄' },
-    { id: 'profile', label: 'Profile', icon: '👤' },
   ];
 
   return (
@@ -37,7 +35,7 @@ export default function Dashboard() {
             <div>
               <h1 className="text-2xl font-bold text-white">Dream</h1>
               <p className="text-white/60 text-sm">
-                {userProfile?.primaryGoals?.[0] || 'Career Development'}
+                {userProfile?.mainGoal || 'Career Development'}
               </p>
             </div>
             <div className="flex items-center gap-4">
@@ -47,7 +45,7 @@ export default function Dashboard() {
               </div>
               <div className="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center">
                 <div className="text-white font-bold text-xl">
-                  {userProfile?.primaryGoals?.[0]?.charAt(0) || 'D'}
+                  {userProfile?.mainGoal?.charAt(0) || 'D'}
                 </div>
               </div>
             </div>
@@ -84,10 +82,8 @@ export default function Dashboard() {
         {currentView === 'projects' && <ProjectsView />}
         {currentView === 'jobs' && <JobsView />}
         {currentView === 'resume' && <ResumeView />}
-        {currentView === 'profile' && <ProfileView />}
       </main>
     </div>
   );
 }
-
 
